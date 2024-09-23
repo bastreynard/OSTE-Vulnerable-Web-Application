@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: oste-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toto1234
+      MYSQL_DATABASE: OSTE
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: toto1234
+      TZ: "Europe/Zurich"
+    networks:
+      - oste-internal
+    ports:
+      - "3300:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: oste-nginx
+    ports:
+      - "8089:80"
+    networks:
+      - reverse_proxy # optional for access through reverse proxy
+      - oste-internal
+    environment:
+      - NGINX_PORT=80
+
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    container_name: oste-php
+    networks:
+      - oste-internal
+
+volumes:
+    mysql-data:
+
+networks:
+  oste-internal:
+    name: oste-internal
+    driver: bridge
+  reverse_proxy: # optional for access through reverse proxy
+    external: true

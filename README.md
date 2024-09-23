@@ -25,6 +25,7 @@ List of Main Vulnerabilities supported (for now):
   - OS command injection (4 pages)
 ## Installation
 
+### Native
 The installation process requires a specific set of requirements. While this project is primarily supported on Kali Linux, it can also be compatible with other operating systems:
 1.    Prerequisites:
   - Ensure you have a web server installed on your local machine. Popular choices include Apache, Nginx, or XAMPP (which includes Apache and PHP).
@@ -34,8 +35,8 @@ The installation process requires a specific set of requirements. While this pro
   - Clone or download the project repository from the source to your local machine.
 
 3.    Configure Web Server:
-  - If you are using XAMPP, place the project folder inside the htdocs directory (for Apache) or www directory (for XAMPP).
-  - For other web servers like Apache or Nginx, configure the web server's root directory to point to the project folder.
+  - If you are using XAMPP, place the `oste-site` directory inside the htdocs directory (for Apache) or www directory (for XAMPP).
+  - For other web servers like Apache or Nginx, configure the web server's root directory to point to the `oste-site` directory.
 
 4.    Database Setup:
   - Access your MySQL database server through a tool like phpMyAdmin or MySQL command-line interface (CLI).
@@ -57,6 +58,20 @@ The installation process requires a specific set of requirements. While this pro
 
 Congratulations! You have successfully deployed the simple PHP/SQL application in your local environment. If you encounter any issues, double-check the installation steps and ensure that you have met all the prerequisites.
   
+### Docker Compose
+
+This will setup a MySQL database, Nginx and PHP containers with all prerequisite to run the vulnerable web app: 
+```
+docker compose build && docker compose up -d
+```
+The site will be accessible on http://localhost:8089.
+Optional you can use a reverse proxy to serve the site. Using Caddy for example:
+```
+oste.mydomain.org {
+	reverse_proxy oste-nginx:80
+}
+```
+Make sure your reverse proxy is on the same Docker network and nginx network in `docker-compose.yml` is updated accordingly.
 
 ## Contributing
 
@@ -80,7 +95,7 @@ Please note that all contributions will be reviewed by the project maintainers. 
 If you have any questions or need further clarification, feel free to reach out to us through the issue tracker or by contacting the project maintainers directly.
 
 ## ScreenShots 
-![Main Interface ](ico/Screenshot_2023-07-31_21-54-13.png)
+![Main Interface ](img/Screenshot_2023-07-31_21-54-13.png)
 
 ## License
 
